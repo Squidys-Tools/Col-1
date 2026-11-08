@@ -2582,6 +2582,20 @@ html.light .ld-tabs { box-shadow: inset 0 0 0 1px var(--lib-edge), inset 0 1px 2
 .docs-layout-nav, .docs-layout-toc { position: sticky; top: 0; align-self: start; max-height: calc(100dvh - 8px); overflow-y: auto; padding: 56px 0 32px; scrollbar-width: none; }
 .docs-layout-nav::-webkit-scrollbar, .docs-layout-toc::-webkit-scrollbar { display: none; }
 .docs-layout-main { min-width: 0; padding: 56px 0 96px; }
+/* Docs search: a compact field in the library search's glass, spanning the layout's top so the
+   reading columns drop a little below it. The top bar hides its search on these pages (see Header). */
+.docs-search { grid-column: 1 / -1; display: flex; justify-content: center; padding: 20px 0 0; }
+html .app-frame .docs-search-field,
+html.light .app-frame .docs-search-field {
+  width: min(100%, 440px); height: 38px; min-height: 38px; padding: 0 8px 0 14px; border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.035));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 0 0 1px rgba(255,255,255,.08), 0 8px 22px rgba(0,0,0,.35);
+  color: var(--lib-text-2);
+}
+html.light .app-frame .docs-search-field { background: #fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.09), 0 4px 14px rgba(0,0,0,.08); }
+html .app-frame .docs-search-field:focus-within { box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 0 0 2px var(--lib-focus), 0 8px 24px rgba(0,0,0,.4); }
+html .app-frame .docs-search-field input { font-size: 14px; }
+html .app-frame .docs-search-field > svg { width: 16px; height: 16px; color: var(--lib-text); }
 
 /* Entrance: a short, quiet fade-up for the page body only. */
 @keyframes docs-in { from { opacity: 0; transform: translateY(8px); } }

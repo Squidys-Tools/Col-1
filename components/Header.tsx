@@ -32,6 +32,8 @@ export function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const stars = useRepoStars();
+  // Docs and MCP guides render their own search row inside DocsLayout instead.
+  const inDocs = pathname.startsWith("/docs") || pathname.startsWith("/mcp");
 
   useEffect(() => {
     setMenuOpen(false);
@@ -60,8 +62,8 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Home and the directories carry their own large search; the bar's would only repeat it. */}
-        {pathname !== "/" && !IN_PLACE_SEARCH[pathname] && <SiteSearch className="site-header-search topbar-search" />}
+        {/* Home, the directories and the docs carry their own search; the bar's would only repeat it. */}
+        {pathname !== "/" && !IN_PLACE_SEARCH[pathname] && !inDocs && <SiteSearch className="site-header-search topbar-search" />}
 
         <div className="topbar-actions">
           <RepoStars stars={stars} className="site-header-repo topbar-repo" />
