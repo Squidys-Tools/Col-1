@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "@/hooks/use-pathname";
 import { Link } from "@/components/Link";
 import { Menu, X } from "lucide-react";
@@ -32,6 +32,50 @@ export function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const stars = useRepoStars();
+  const linksRef = useRef<HTMLElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
+
+  // The active-link underline is one shared bar that slides between links.
+  // It measures the active link's box (inset by its side padding so the bar
+  // matches the text width) into CSS vars the bar transforms with. Until the
+  // first measurement lands, a ::after on the link itself is the fallback.
+  useLayoutEffect(() => {
+    const nav = linksRef.current;
+    const indicator = indicatorRef.current;
+    if (!nav || !indicator) return;
+
+    let cancelled = false;
+    const measure = () => {
+      const active = nav.querySelector<HTMLElement>('a[aria-current="page"]');
+      if (!active) {
+        delete indicator.dataset.active;
+        return;
+      }
+      // Below the desktop breakpoint the links are display:none and measure 0;
+      // wait for a real box so the bar never arms at width 0 and grows in later.
+      if (active.offsetWidth === 0) return;
+      const style = getComputedStyle(active);
+      const padLeft = parseFloat(style.paddingLeft);
+      const padRight = parseFloat(style.paddingRight);
+      indicator.style.setProperty("--x", `${active.offsetLeft + padLeft}px`);
+      indicator.style.setProperty("--w", `${Math.max(active.offsetWidth - padLeft - padRight, 0)}`);
+      indicator.dataset.active = "";
+      // The shared element now owns the bar; retire the ::after fallback.
+      nav.dataset.indicator = "";
+      // The first real measurement arms the transition. Flush styles first so
+      // the bar lands in place instead of sliding in from scaleX(0).
+      if (indicator.dataset.ready === undefined) {
+        void indicator.offsetWidth;
+        indicator.dataset.ready = "";
+      }
+    };
+
+    measure();
+    void document.fonts.ready.then(() => { if (!cancelled) measure(); });
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+    return () => { cancelled = true; observer.disconnect(); };
+  }, [pathname]);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -52,12 +96,13 @@ export function Header() {
           <span className="topbar-version cap" title={`Col v${packageJson.version}`}>v{packageJson.version}</span>
         </div>
 
-        <nav aria-label="Site" className="topbar-links">
+        <nav aria-label="Site" className="topbar-links" ref={linksRef}>
           {siteLinks.map(([label, href]) => (
             <Link key={href} to={href} className="topbar-link" aria-current={isActive(pathname, href) ? "page" : undefined}>
               <span className="cap">{label}</span>
             </Link>
           ))}
+          <span ref={indicatorRef} className="topbar-indicator" aria-hidden />
         </nav>
 
         <div className="topbar-actions">

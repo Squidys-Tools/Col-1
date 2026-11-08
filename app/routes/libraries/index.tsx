@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { pageHead } from "@/lib/site";
-import { validateQuerySearch } from "@/lib/directory-query";
+import { uncachedPageHeaders, validateQuerySearch } from "@/lib/directory-query";
 import { DirectoryExplorer } from "@/components/DirectoryExplorer";
 
 export const Route = createFileRoute("/libraries/")({
   validateSearch: validateQuerySearch,
+  headers: () => uncachedPageHeaders,
   head: () => pageHead(
     "/libraries",
     "UI Libraries for React, Tailwind CSS and More | Col",

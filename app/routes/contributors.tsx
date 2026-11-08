@@ -25,17 +25,17 @@ export const Route = createFileRoute("/contributors")({
 const number = new Intl.NumberFormat("en");
 
 /** Staggered entrance order, capped so long lists do not trail on. */
-const reveal = (index: number) => ({ "--i": Math.min(index, 12) }) as CSSProperties;
+const reveal = (index: number) => ({ "--i": index }) as CSSProperties;
 
 function ContributorsPage() {
   const contributors = Route.useLoaderData();
 
   return (
     <div className="cb">
-      <header className="cb-head ld-reveal" style={reveal(0)}>
+      <header className="pg-head ld-reveal" style={reveal(0)}>
         <div>
           <h1>Contributors</h1>
-          <p className="cb-lead">The people keeping Col useful, accurate, and open.</p>
+          <p className="pg-lead">The people keeping Col useful, accurate, and open.</p>
         </div>
         <div className="cb-head-side">
           {contributors.length > 0 && (

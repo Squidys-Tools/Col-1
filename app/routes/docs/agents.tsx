@@ -14,7 +14,7 @@ export const Route = createFileRoute("/docs/agents")({
 function AgentsPage() {
   return (
     <article>
-      <DocsHeader section="Get started" title="Agents and LLMs" lead="Give your agent Col’s catalog, then verify the shortlist against each library’s official docs." />
+      <DocsHeader title="Agents and LLMs" lead="Give your agent Col’s catalog, then verify the shortlist against each library’s official docs." />
 
       <DocsSection title="Connect Col MCP">
         <DocsText>Use short keywords and structured filters for catalog searches; queries are limited to 4,096 Unicode code points. The MCP agent guide covers exact-name ranking, multi-framework AND filters, verified preview availability, and the sandboxed HTML fallback.</DocsText>

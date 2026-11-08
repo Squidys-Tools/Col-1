@@ -15,7 +15,6 @@ function DocsPage() {
   return (
     <article>
       <DocsHeader
-        section="Get started"
         title="Introduction"
         lead="Col is an open-source directory for discovering UI libraries by category, stack, and use case."
       >
