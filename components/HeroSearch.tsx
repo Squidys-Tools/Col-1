@@ -14,7 +14,7 @@ const LIFT_GAP_WIDE = 28;
 const LIFT_GAP_NARROW = 16;
 const MAX_RESULTS = 24;
 /** How long the lift and the rising sheet play before the page hands off to the directory. */
-const HANDOFF_MS = 900;
+const HANDOFF_MS = 800;
 /** Longest the view transition waits for the directory before letting the page paint again. */
 const HANDOFF_WAIT_MS = 1200;
 
@@ -59,7 +59,7 @@ function loadSearcher(): Promise<Searcher> {
 
 /**
  * Hero library search. The first keystroke lifts the field to the top of the
- * stage, the hero copy and tiles blur away (see `html[data-hero-search]` in
+ * stage, the hero copy and tiles fade away (see `html[data-hero-search]` in
  * HomePage.module.css), and a sheet of library cards rises from below the
  * fold. Once that has played, a view transition hands off to /libraries: the
  * field morphs into the directory's search and the sheet into its results,
@@ -283,8 +283,8 @@ export function HeroSearch() {
               <p className={styles.searchEmpty}>Nothing matches that search.</p>
             ) : (
               <div className={styles.searchGrid}>
-                {results.slice(0, MAX_RESULTS).map(({ library, components }, index) => (
-                  <div key={library.slug} className={styles.searchCell} style={{ "--i": Math.min(index, 11) } as CSSProperties}>
+                {results.slice(0, MAX_RESULTS).map(({ library, components }) => (
+                  <div key={library.slug} className={styles.searchCell}>
                     <LibraryCard layout="grid" library={library} matches={components} saved={saved.has(library.slug)} onToggleSaved={() => toggleSaved(library.slug)} />
                   </div>
                 ))}
