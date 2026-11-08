@@ -17,8 +17,10 @@
  * Tiles and the orbit are placed in % of the hero height and sized in cqi of the stage width.
  */
 .story { --hero-height: calc(100dvh - 8px); position: relative; }
-/* Its own rounded top-left clip keeps composited layers (rays canvas, tiles) inside the panel corner during theme switches. */
-.stage { position: relative; isolation: isolate; container-type: inline-size; clip-path: inset(0 round var(--frame-radius) 0 0 0); }
+/* Inside the app frame the home card floats on a --topbar-gap gutter above and below, so the hero's screen is the card's height. */
+:global(.app-frame[data-home]) .story { --hero-height: calc(100dvh - var(--topbar-gap) * 2); }
+/* Its own rounded top clip keeps composited layers (rays canvas, tiles) inside the panel corners during theme switches. */
+.stage { position: relative; isolation: isolate; container-type: inline-size; clip-path: inset(0 round var(--frame-radius) var(--frame-radius) 0 0); }
 /* Darker at the top so the rays read as light, easing back to the panel colour. */
 .stage::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: var(--hero-height); pointer-events: none; background: radial-gradient(50% 40% at 50% 48%, var(--hero-light), transparent 72%), linear-gradient(to bottom, var(--hero-shade), transparent 65%); }
 /* React Bits Light Rays (see LightRays.tsx), mounted by HomeStory on wide screens. In light mode the shader paints dark ink on white, so multiply drops the white. */
@@ -189,6 +191,10 @@
 @media (max-width: 1023px) {
   .story { --hero-height: calc(100dvh - var(--site-header-height)); }
   .stage { clip-path: none; }
+}
+/* Full-bleed home card: only the top gutter is left, so the hero's screen is the card's height again. */
+@media (max-width: 640px) {
+  :global(.app-frame.library-page-shell[data-home]) .story { --hero-height: calc(100dvh - var(--topbar-gap)); }
 }
 @media (max-width: 900px) {
   .scene[data-scene-index="0"] { padding-block: 64px; }
