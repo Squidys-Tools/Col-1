@@ -1203,7 +1203,6 @@ html.light .app-nav-block { border-color: rgba(0,0,0,.06); }
 .dir-saved:active svg { transform: scale(.8); }
 
 .library-page-shell .directory-results-pane { padding-top: 1rem; }
-.directory-filter-trigger { border: 0 !important; background: rgba(255,255,255,.05) !important; border-radius: 10px !important; }
 
 html.light .dir-toolbar-title h1 { color: #111; }
 html.light .dir-count { color: rgba(0,0,0,.4); }
@@ -3037,7 +3036,7 @@ html[data-search-handoff]::view-transition-group(col-search) { z-index: 3; }
 @media (min-width: 641px) {
   html .app-frame .directory-search-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 620px) minmax(0, 1fr); }
   html .app-frame .directory-search-row > .directory-hero-search { grid-column: 2; max-width: none; height: 60px; border-radius: 18px; }
-  html .app-frame .directory-search-row .directory-filter-trigger { height: 60px; min-height: 60px; }
+  html .app-frame .directory-search-row .directory-filter-trigger { height: 60px; min-height: 60px; border-radius: 18px; }
   html .app-frame .directory-search-row > :not(.directory-hero-search) { grid-column: 3; justify-self: start; }
 }
 
