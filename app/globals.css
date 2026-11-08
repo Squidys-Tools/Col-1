@@ -2897,8 +2897,8 @@ html .app-frame .app-frame-panel {
 }
 .topbar { position: relative; z-index: 50; grid-column: 1; grid-row: 1; display: flex; align-items: center; padding: var(--topbar-gap); }
 .topbar-glass {
-  /* Brand | centred links | search | actions. With no search the fourth track stays empty. */
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 16px;
+  /* Equal side tracks, so the link row sits dead centre of the bar whatever the sides hold. */
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px;
   width: 100%; height: var(--topbar-h); padding: 0 8px 0 16px; border-radius: 16px;
   background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025)), color-mix(in srgb, var(--lib-panel) 70%, transparent);
   -webkit-backdrop-filter: blur(20px) saturate(1.2); backdrop-filter: blur(20px) saturate(1.2);
@@ -2908,7 +2908,7 @@ html.light .topbar-glass {
   background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.78));
   box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(0,0,0,.06), 0 10px 28px rgba(0,0,0,.07);
 }
-.topbar-brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.topbar-brand { display: flex; align-items: center; gap: 8px; min-width: 0; justify-self: start; }
 .topbar-version { padding: 2px 6px; border-radius: 6px; background: var(--lib-chip); color: var(--lib-text-3); font-size: 10.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .topbar-links { position: relative; display: flex; align-items: center; justify-content: center; gap: 2px; min-width: 0; }
 .topbar-link {
@@ -2925,7 +2925,7 @@ html.light .topbar-glass {
 }
 html.light .topbar-link[aria-current="page"] { background: #fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.07), 0 2px 8px rgba(0,0,0,.08); }
 .topbar-link:focus-visible, .topbar-menu:focus-visible, .topbar-panel-link:focus-visible { outline: 2px solid var(--lib-focus); outline-offset: 2px; }
-.topbar-actions { display: flex; align-items: center; gap: 6px; }
+.topbar-actions { display: flex; align-items: center; gap: 6px; justify-self: end; }
 .topbar-actions > .site-repo { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 10px; border-radius: 10px; background: var(--lib-field); color: var(--lib-text-2); box-shadow: var(--lib-depth-1); font-size: 12.5px; font-weight: 600; text-decoration: none; }
 .topbar-actions > .site-repo:hover { background: var(--lib-field-hover); color: var(--lib-text); }
 .topbar-actions > .site-repo .site-repo-count { display: inline-flex; align-items: center; gap: 4px; }
@@ -2947,15 +2947,11 @@ html.light .topbar-link[aria-current="page"] { background: #fff; box-shadow: ins
 @media (max-width: 1239px) {
   .topbar-glass { grid-template-columns: auto minmax(0, 1fr) auto; }
   .topbar-links { display: none; }
-  .topbar-actions { justify-self: end; }
   .topbar-menu { display: grid !important; }
-  /* The search takes the freed middle stretch so it stays prominent without the links. */
-  html .app-frame .topbar-search { width: 100%; }
 }
 @media (max-width: 640px) {
   html .app-frame.library-page-shell { --topbar-gap: 8px; --topbar-h: 48px; }
   .topbar-version, .topbar-actions > .site-repo { display: none; }
-  .topbar-search kbd { display: none; }
   html .app-frame .app-frame-panel { margin: 0; border-radius: var(--frame-radius) var(--frame-radius) 0 0; }
   /* On small screens the home card is full-bleed like every other page, so the floating gutter lifts. */
   html .app-frame.library-page-shell[data-home] .app-frame-panel { margin-bottom: 0; border-radius: var(--frame-radius) var(--frame-radius) 0 0; }
@@ -2983,19 +2979,6 @@ html.light .directory-filter-popover { background: rgba(255,255,255,.96); box-sh
 .directory-filter-popover .facet-group { padding: 0 8px; }
 .directory-filter-popover [data-slot="sidebar-content"] { padding: 4px 0; scrollbar-width: thin; overscroll-behavior: contain; }
 @media (max-width: 760px) { html .app-frame .directory-filter-trigger { margin: 16px 16px 0; } }
-
-/* Top bar search: the bar's centrepiece, styled like the library search field beside it. */
-html .app-frame .topbar-search,
-html.light .app-frame .topbar-search {
-  width: clamp(240px, 26vw, 380px); height: 40px; min-height: 40px; padding: 0 8px 0 14px; border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.035));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 0 0 1px rgba(255,255,255,.08), 0 8px 22px rgba(0,0,0,.35);
-  color: var(--lib-text-2);
-}
-html.light .app-frame .topbar-search { background: #fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.09), 0 4px 14px rgba(0,0,0,.08); }
-html .app-frame .topbar-search:focus-within { box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 0 0 2px var(--lib-focus), 0 8px 24px rgba(0,0,0,.4); }
-html .app-frame .topbar-search input { font-size: 13.5px; }
-html .app-frame .topbar-search > svg { width: 16px; height: 16px; color: var(--lib-text); }
 
 /* Directory search: the hero's detached glass field, at the top of the directory, with Filters beside it. */
 html .app-frame .directory-search-row { display: flex; align-items: center; gap: 12px; padding: 28px 24px 4px; }

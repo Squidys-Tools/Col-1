@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "@/hooks/use-pathname";
 import { Link } from "@/components/Link";
 import { Menu, X } from "lucide-react";
-import { BrandLink, IN_PLACE_SEARCH, RepoStars, SiteSearch, useRepoStars } from "./SiteChrome";
+import { BrandLink, RepoStars, useRepoStars } from "./SiteChrome";
 import { Icons, type IconComponent } from "./MaskIcon";
 import { ThemeToggle } from "./ThemeToggle";
 import packageJson from "../package.json";
@@ -32,8 +32,6 @@ export function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const stars = useRepoStars();
-  // Docs and MCP guides render their own search row inside DocsLayout instead.
-  const inDocs = pathname.startsWith("/docs") || pathname.startsWith("/mcp");
 
   useEffect(() => {
     setMenuOpen(false);
@@ -61,9 +59,6 @@ export function Header() {
             </Link>
           ))}
         </nav>
-
-        {/* Home, the directories and the docs carry their own search; the bar's would only repeat it. */}
-        {pathname !== "/" && !IN_PLACE_SEARCH[pathname] && !inDocs && <SiteSearch className="site-header-search topbar-search" />}
 
         <div className="topbar-actions">
           <RepoStars stars={stars} className="site-header-repo topbar-repo" />
