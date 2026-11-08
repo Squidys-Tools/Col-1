@@ -2940,15 +2940,26 @@ html .app-frame .topbar-search { width: clamp(180px, 18vw, 260px); }
 }
 @media (prefers-reduced-motion: reduce) { .topbar-panel { animation: none; } .topbar-link { transition: none; } }
 
-/* Directory filters: no sidebar to live in, so the panel opens as a glass sheet from the toolbar's Filters button at every width. */
+/* Directory filters: no sidebar to live in, so the panel opens as a rounded glass dropdown
+   under the search row's Filters button at every width. */
 html .app-frame .directory-filter-trigger {
   display: inline-flex; align-items: center; gap: 8px; height: 32px; min-height: 32px; margin: 20px 24px 0; padding: 0 12px;
   border: 0; border-radius: 10px; background: var(--lib-field); color: var(--lib-text-2); box-shadow: var(--lib-depth-1); font-size: 13px; font-weight: 600;
 }
 html .app-frame .directory-filter-trigger:hover { background: var(--lib-field-hover); color: var(--lib-text); }
 html .app-frame .directory-filter-trigger[data-active] { color: var(--lib-text); box-shadow: var(--lib-depth-1), inset 0 0 0 1px var(--lib-focus); }
-.directory-filter-sheet { -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); background: color-mix(in srgb, var(--lib-panel) 88%, transparent) !important; box-shadow: 24px 0 60px rgba(0,0,0,.4); border-right: 1px solid var(--lib-edge); }
-.directory-filter-sheet .facet-group { padding: 0 12px; }
+/* The dropdown floats below the button, rounded like the search field it sits beside. */
+.directory-filter-popover {
+  display: flex; flex-direction: column; width: min(18rem, calc(100vw - 32px));
+  max-height: min(30rem, var(--radix-popover-content-available-height, 30rem));
+  padding: 6px; border: 0; border-radius: 18px; overflow: hidden;
+  background: color-mix(in srgb, var(--lib-panel) 88%, transparent);
+  -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), inset 0 0 0 1px rgba(255,255,255,.07), 0 24px 60px rgba(0,0,0,.45);
+}
+html.light .directory-filter-popover { background: rgba(255,255,255,.96); box-shadow: inset 0 0 0 1px rgba(0,0,0,.07), 0 16px 44px rgba(0,0,0,.12); }
+.directory-filter-popover .facet-group { padding: 0 8px; }
+.directory-filter-popover [data-slot="sidebar-content"] { padding: 4px 0; scrollbar-width: thin; overscroll-behavior: contain; }
 @media (max-width: 760px) { html .app-frame .directory-filter-trigger { margin: 16px 16px 0; } }
 
 /* Top bar search: the bar's centrepiece, in the hero search's glass, not a quiet field in the corner. */

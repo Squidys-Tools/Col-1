@@ -16,13 +16,12 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  useSidebar,
 } from "@/components/ui/sidebar";
 
 interface FilterDropdownProps {
@@ -286,7 +285,7 @@ interface FilterBarProps {
   onClearAll: () => void;
 }
 
-/** The directory search row (search field and Filters button) and the filter sheet it opens. */
+/** The directory search row (search field and Filters button) and the filter dropdown it opens. */
 export function FilterBar({ showSaved, activeCategory, activeStacks, activeUseCases, query, onCategoryChange, onStackChange, onUseCaseChange, onClearAll, facetCounts }: FilterBarProps) {
   const hasFilters = showSaved || query.trim() !== "" || activeCategory !== null || activeStacks.length > 0 || activeUseCases.length > 0;
 
@@ -310,24 +309,16 @@ interface FilterSidebarProps {
   /** Accessible name of the filter region, for example "Library filters". */
   label: string;
   hasFilters: boolean;
-  /** Renders the panel body inside the filter sheet. The id suffix keeps its element ids unique. */
+  /** Renders the panel body inside the filter dropdown. The id suffix keeps its element ids unique. */
   renderPanel: (idSuffix: string) => ReactNode;
 }
 
 /**
- * Places a directory's filter panel in a sheet behind a "Filters" button, at
+ * Places a directory's filter panel in a dropdown behind a "Filters" button, at
  * every width. The frame has no sidebar, so the panel no longer lives in one.
  */
 export function FilterSidebar({ label, hasFilters, renderPanel }: FilterSidebarProps) {
-  const { openMobile, setOpenMobile } = useSidebar();
-  const filterTriggerRef = useRef<HTMLButtonElement>(null);
-
-  const handleMobileOpenChange = (nextOpen: boolean) => {
-    setOpenMobile(nextOpen);
-    if (!nextOpen) {
-      requestAnimationFrame(() => filterTriggerRef.current?.focus());
-    }
-  };
+  const [open, setOpen] = useState(false);
 
   const pathname = usePathname();
   const query = useDirectoryQuery();
@@ -365,28 +356,25 @@ export function FilterSidebar({ label, hasFilters, renderPanel }: FilterSidebarP
           )}
         </form>
       )}
-      <Button
-        type="button"
-        variant="outline"
-        className="directory-filter-trigger"
-        ref={filterTriggerRef}
-        data-active={hasFilters || undefined}
-        onClick={() => setOpenMobile(true)}
-        aria-label={hasFilters ? "Open filters, filters active" : "Open filters"}
-      >
-        <SlidersHorizontal aria-hidden /><span className="directory-filter-label">Filters{hasFilters ? " · Active" : ""}</span>
-      </Button>
-      </div>
-
-
-      <Sheet open={openMobile} onOpenChange={handleMobileOpenChange}>
-        <SheetContent side="left" className="directory-filter-sheet w-[18rem] gap-0 p-0">
-          <SheetTitle className="sr-only">{label}</SheetTitle>
-          <div className="directory-filter-panel flex h-full min-h-0 flex-col pt-14">
-            {renderPanel("-mobile")}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            className="directory-filter-trigger"
+            data-active={hasFilters || undefined}
+            aria-label={hasFilters ? "Open filters, filters active" : "Open filters"}
+          >
+            <SlidersHorizontal aria-hidden /><span className="directory-filter-label">Filters{hasFilters ? " · Active" : ""}</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent align="end" sideOffset={10} collisionPadding={16} className="directory-filter-popover" aria-label={label}>
+          <div className="directory-filter-panel flex min-h-0 flex-1 flex-col">
+            {renderPanel("-popover")}
           </div>
-        </SheetContent>
-      </Sheet>
+        </PopoverContent>
+      </Popover>
+      </div>
     </>
   );
 }
