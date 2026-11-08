@@ -1,8 +1,6 @@
-"use client";
-
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type FocusEvent, type MouseEvent, type ReactNode } from "react";
 import { Check, ChevronDown, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/hooks/use-pathname";
 import { IN_PLACE_SEARCH } from "./SiteChrome";
 import { directoryQuery, useDirectoryQuery } from "@/lib/directory-query";
 import { categoryIcons, Icons, type IconComponent } from "./MaskIcon";

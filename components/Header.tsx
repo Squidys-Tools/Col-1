@@ -1,8 +1,6 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/hooks/use-pathname";
+import { Link } from "@/components/Link";
 import { Menu, X } from "lucide-react";
 import { BrandLink, IN_PLACE_SEARCH, RepoStars, SiteSearch, useRepoStars } from "./SiteChrome";
 import { Icons, type IconComponent } from "./MaskIcon";
@@ -10,7 +8,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import packageJson from "../package.json";
 
 /** Every top-level route. This bar is the only site navigation, at every width. */
-export const siteLinks: readonly (readonly [string, string, IconComponent])[] = [
+export const siteLinks = [
   ["Home", "/", Icons.home],
   ["Libraries", "/libraries", Icons.libraries],
   ["Components", "/components", Icons.componentLibrary],
@@ -19,7 +17,7 @@ export const siteLinks: readonly (readonly [string, string, IconComponent])[] = 
   ["Docs", "/docs", Icons.docs],
   ["Contributors", "/contributors", Icons.contributors],
   ["Sponsors", "/sponsors", Icons.sponsors],
-];
+] as const satisfies readonly (readonly [string, string, IconComponent])[];
 
 /** Whether a nav link's section contains the current route. */
 const isActive = (pathname: string, href: string) =>
@@ -56,7 +54,7 @@ export function Header() {
 
         <nav aria-label="Site" className="topbar-links">
           {siteLinks.map(([label, href]) => (
-            <Link key={href} href={href} className="topbar-link" aria-current={isActive(pathname, href) ? "page" : undefined}>
+            <Link key={href} to={href} className="topbar-link" aria-current={isActive(pathname, href) ? "page" : undefined}>
               <span className="cap">{label}</span>
             </Link>
           ))}
@@ -83,7 +81,7 @@ export function Header() {
       {menuOpen && (
         <nav id="topbar-menu-panel" aria-label="Site menu" className="topbar-panel">
           {siteLinks.map(([label, href, Icon]) => (
-            <Link key={href} href={href} className="topbar-panel-link" onClick={() => setMenuOpen(false)} aria-current={isActive(pathname, href) ? "page" : undefined}>
+            <Link key={href} to={href} className="topbar-panel-link" onClick={() => setMenuOpen(false)} aria-current={isActive(pathname, href) ? "page" : undefined}>
               <Icon className="nav-icon" />
               <span className="cap">{label}</span>
             </Link>

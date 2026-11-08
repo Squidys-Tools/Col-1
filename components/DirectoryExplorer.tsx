@@ -1,7 +1,5 @@
-"use client";
-
-import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { getRouteApi } from "@tanstack/react-router";
 import { Heart, SearchX } from "lucide-react";
 import { Icons } from "./MaskIcon";
 import {
@@ -22,13 +20,15 @@ const SAVED_LIBRARIES_KEY = "col:saved-libraries";
 
 const searchDirectory = createDirectorySearch(libraries, componentIndex);
 
+const librariesRoute = getRouteApi("/libraries/");
+
 /**
  * Follows ?q= into the shared directory query, so a link from /libraries?q=react to /libraries clears the
  * filter. Text that differs only in trailing space (the hero handoff keeps what was typed; the URL is trimmed)
- * is left alone. Its own Suspense boundary keeps the rest of the page statically rendered.
+ * is left alone. Rendering nothing keeps the rest of the page statically rendered.
  */
 function DirectoryQuerySync() {
-  const q = useSearchParams().get("q") ?? "";
+  const { q = "" } = librariesRoute.useSearch();
   useEffect(() => {
     if (directoryQuery.get().trim() !== q.trim()) directoryQuery.set(q);
   }, [q]);
@@ -160,7 +160,7 @@ export function DirectoryExplorer({ initialQuery = "" }: { initialQuery?: string
 
   return (
     <section className="directory-section w-full px-0">
-      <Suspense fallback={null}><DirectoryQuerySync /></Suspense>
+      <DirectoryQuerySync />
       <SidebarProvider className="directory-layout min-h-[calc(100dvh-var(--site-header-height))] flex-col lg:flex-row">
         <FilterBar
           showSaved={showSaved}

@@ -1,10 +1,8 @@
-"use client";
-
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { Search, X } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link } from "@/components/Link";
+import { useRouter } from "@tanstack/react-router";
 import { directoryQuery } from "@/lib/directory-query";
 import type { SearchResult } from "@/lib/directory";
 import { LibraryCard } from "./LibraryCard";
@@ -105,10 +103,10 @@ export function HeroSearch() {
   }, []);
 
   const warm = () => {
-    if (searcher) return void router.prefetch("/libraries");
+    if (searcher) return void router.preloadRoute({ to: "/libraries" });
     setLoadFailed(false);
     loadSearcher().then((search) => setSearcher(() => search), () => setLoadFailed(true));
-    router.prefetch("/libraries");
+    void router.preloadRoute({ to: "/libraries" });
   };
 
   // After the lift, hand off to the directory with the query (and anything typed since) carried over.
@@ -121,7 +119,7 @@ export function HeroSearch() {
       const navigate = async () => {
         handingOff.current = true;
         directoryQuery.set(query);
-        router.push(`/libraries?q=${encodeURIComponent(query.trim())}`, { scroll: false });
+        void router.navigate({ to: "/libraries", search: { q: query.trim() }, resetScroll: false });
         // Never hold the page frozen on a slow network: release the transition after HANDOFF_WAIT_MS, and finish the focus whenever the directory lands.
         // Keys pressed while the hero field is gone and the directory's isn't focused yet still count.
         const buffer = (event: KeyboardEvent) => {
@@ -140,7 +138,7 @@ export function HeroSearch() {
           const typed = latestQuery.current;
           if (typed !== query) {
             directoryQuery.set(typed);
-            window.history.replaceState(window.history.state, "", `/libraries?q=${encodeURIComponent(typed.trim())}`);
+            void router.navigate({ to: "/libraries", search: { q: typed.trim() }, replace: true, resetScroll: false });
           }
           field.focus({ preventScroll: true });
           field.setSelectionRange(typed.length, typed.length);
@@ -278,7 +276,7 @@ export function HeroSearch() {
             {loadFailed && !searcher && (
               <button type="button" className={styles.searchSheetAll} onClick={warm}>Try again</button>
             )}
-            <Link href="/libraries" className={styles.searchSheetAll} tabIndex={open ? undefined : -1}>Open the directory</Link>
+            <Link to="/libraries" className={styles.searchSheetAll} tabIndex={open ? undefined : -1}>Open the directory</Link>
           </header>
           <div className={styles.searchSheetScroll}>
             {searcher && results.length === 0 ? (

@@ -1,6 +1,6 @@
 import { Fragment, type CSSProperties } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { Image } from "@/components/Image";
+import { Link } from "@/components/Link";
 import { ArrowRight, Star } from "lucide-react";
 import { libraryBySlug } from "@/data/libraries";
 import { sponsors } from "@/data/sponsors";
@@ -66,7 +66,7 @@ export function HeroBackdrop() {
         <Image key={tile.slug} src={`/hero-logos/background/${tile.slug}.png`} alt="" width={96} height={96} className={styles.distantTile} style={tileStyle(tile, index, tile.size * -2)} aria-hidden />
       ))}
       {orbitTiles.map(({ library, src, ...placement }, index) => (
-        <Link key={library.slug} href={`/libraries/${library.slug}`} target="_blank" rel="noopener noreferrer" aria-label={library.name} className={styles.tile} data-hero-inert="" style={tileStyle(placement, index, placement.size * 2)}>
+        <Link key={library.slug} to="/libraries/$slug" params={{ slug: library.slug }} target="_blank" rel="noopener noreferrer" aria-label={library.name} className={styles.tile} data-hero-inert="" style={tileStyle(placement, index, placement.size * 2)}>
           <Image src={src} alt="" width={320} height={320} sizes="20vw" loading="eager" />
         </Link>
       ))}
@@ -94,7 +94,7 @@ export function HeroCopy() {
       <p>Discover UI libraries, components, and tools by stack and use case.</p>
       <HeroSearch />
       <div className={styles.actions} data-hero-inert="">
-        <Link href="/libraries" className={styles.button}>
+        <Link to="/libraries" className={styles.button}>
           <RollText>Browse libraries</RollText>
           <span className={styles.arrowSwap} aria-hidden><ArrowRight /><ArrowRight /></span>
         </Link>

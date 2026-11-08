@@ -1,7 +1,5 @@
-"use client";
-
 import { useEffect, useRef, type ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/hooks/use-pathname";
 import { Header } from "./Header";
 
 type SidebarMode = "narrow" | "wide";
