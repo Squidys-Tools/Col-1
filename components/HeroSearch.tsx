@@ -60,9 +60,9 @@ function loadSearcher(): Promise<Searcher> {
 /**
  * Hero library search. The first keystroke lifts the field to the top of the
  * stage, the hero copy and tiles fade away (see `html[data-hero-search]` in
- * HomePage.module.css), and a sheet of library cards rises from below the
- * fold. Once that has played, a view transition hands off to /libraries: the
- * field morphs into the directory's search and the sheet into its results,
+ * HomePage.module.css), and library entries rise into place below it. Once
+ * that has played, a view transition hands off to /libraries: the field
+ * morphs into the directory's search and the entries into its results,
  * with the query and caret carried over. Escape or clearing the field before
  * the handoff puts the hero back.
  */
@@ -156,7 +156,7 @@ export function HeroSearch() {
     return () => window.clearTimeout(timer);
   }, [open, router]);
 
-  // Lift the field by exactly the distance to the top of the stage, and line the sheet up with the stage's edges.
+  // Lift the field by exactly the distance to the top of the stage, and line the results up with the stage's edges.
   useLayoutEffect(() => {
     const root = document.documentElement;
     const element = field.current;
@@ -259,14 +259,14 @@ export function HeroSearch() {
       {mounted && createPortal(
         <section
           id="hero-search-results"
-          className={styles.searchSheet}
-          data-hero-sheet=""
+          className={styles.searchResults}
+          data-hero-results=""
           data-open={open || undefined}
           aria-hidden={!open}
           aria-label="Library results"
-          style={frame ? ({ "--sheet-left": `${frame.left}px`, "--sheet-right": `${frame.right}px`, "--sheet-top": `${frame.top}px` } as CSSProperties) : undefined}
+          style={frame ? ({ "--results-left": `${frame.left}px`, "--results-right": `${frame.right}px`, "--results-top": `${frame.top}px` } as CSSProperties) : undefined}
         >
-          <header className={styles.searchSheetBar}>
+          <header className={styles.searchResultsBar}>
             <h2>
               Libraries
               <span aria-live="polite">
@@ -274,17 +274,17 @@ export function HeroSearch() {
               </span>
             </h2>
             {loadFailed && !searcher && (
-              <button type="button" className={styles.searchSheetAll} onClick={warm}>Try again</button>
+              <button type="button" className={styles.searchResultsAll} onClick={warm}>Try again</button>
             )}
-            <Link to="/libraries" className={styles.searchSheetAll} tabIndex={open ? undefined : -1}>Open the directory</Link>
+            <Link to="/libraries" className={styles.searchResultsAll} tabIndex={open ? undefined : -1}>Open the directory</Link>
           </header>
-          <div className={styles.searchSheetScroll}>
+          <div className={styles.searchResultsScroll}>
             {searcher && results.length === 0 ? (
               <p className={styles.searchEmpty}>Nothing matches that search.</p>
             ) : (
               <div className={styles.searchGrid}>
-                {results.slice(0, MAX_RESULTS).map(({ library, components }) => (
-                  <div key={library.slug} className={styles.searchCell}>
+                {results.slice(0, MAX_RESULTS).map(({ library, components }, index) => (
+                  <div key={library.slug} className={styles.searchCell} style={{ "--i": Math.min(index, 15) } as CSSProperties}>
                     <LibraryCard layout="grid" library={library} matches={components} saved={saved.has(library.slug)} onToggleSaved={() => toggleSaved(library.slug)} />
                   </div>
                 ))}

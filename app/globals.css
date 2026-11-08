@@ -3023,11 +3023,11 @@ html .app-frame .directory-search-row .directory-filter-trigger[data-active] { b
 }
 
 /* Hero → directory handoff (see HeroSearch). Names exist only during the handoff so other navigations
-   stay plain. Two moves: the field glides into the directory's search row and the results sheet into its
+   stay plain. Two moves: the field glides into the directory's search row and the hero results into its
    pane, each over the default crossfade. The root swap stays instant — no page-wide dissolve. */
 html[data-search-handoff] .directory-hero-search,
 html[data-search-handoff] [data-hero-field] { view-transition-name: col-search; }
-html[data-search-handoff] [data-hero-sheet][data-open],
+html[data-search-handoff] [data-hero-results][data-open],
 html[data-search-handoff] .directory-results-pane { view-transition-name: col-results; }
 html[data-search-handoff]::view-transition-group(col-search),
 html[data-search-handoff]::view-transition-group(col-results) { animation-duration: .55s; animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
