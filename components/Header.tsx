@@ -60,9 +60,10 @@ export function Header() {
           ))}
         </nav>
 
+        {/* Home and the directories carry their own large search; the bar's would only repeat it. */}
+        {pathname !== "/" && !IN_PLACE_SEARCH[pathname] && <SiteSearch className="site-header-search topbar-search" />}
+
         <div className="topbar-actions">
-          {/* Home and the directories carry their own large search; the bar's would only repeat it. */}
-          {pathname !== "/" && !IN_PLACE_SEARCH[pathname] && <SiteSearch className="site-header-search topbar-search" />}
           <RepoStars stars={stars} className="site-header-repo topbar-repo" />
           <ThemeToggle />
           <button

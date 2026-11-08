@@ -2883,7 +2883,8 @@ html .app-frame .app-frame-panel {
 }
 .topbar { position: relative; z-index: 50; grid-column: 1; grid-row: 1; display: flex; align-items: center; padding: var(--topbar-gap); }
 .topbar-glass {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  /* Brand | centred links | search | actions. With no search the fourth track stays empty. */
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 16px;
   width: 100%; height: var(--topbar-h); padding: 0 8px 0 16px; border-radius: 16px;
   background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025)), color-mix(in srgb, var(--lib-panel) 70%, transparent);
   -webkit-backdrop-filter: blur(20px) saturate(1.2); backdrop-filter: blur(20px) saturate(1.2);
@@ -2911,7 +2912,6 @@ html.light .topbar-glass {
 html.light .topbar-link[aria-current="page"] { background: #fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.07), 0 2px 8px rgba(0,0,0,.08); }
 .topbar-link:focus-visible, .topbar-menu:focus-visible, .topbar-panel-link:focus-visible { outline: 2px solid var(--lib-focus); outline-offset: 2px; }
 .topbar-actions { display: flex; align-items: center; gap: 6px; }
-html .app-frame .topbar-search { width: clamp(180px, 18vw, 260px); }
 .topbar-actions > .site-repo { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 10px; border-radius: 10px; background: var(--lib-field); color: var(--lib-text-2); box-shadow: var(--lib-depth-1); font-size: 12.5px; font-weight: 600; text-decoration: none; }
 .topbar-actions > .site-repo:hover { background: var(--lib-field-hover); color: var(--lib-text); }
 .topbar-actions > .site-repo .site-repo-count { display: inline-flex; align-items: center; gap: 4px; }
@@ -2931,15 +2931,16 @@ html .app-frame .topbar-search { width: clamp(180px, 18vw, 260px); }
 @keyframes topbar-panel-in { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
 /* Not enough room for eight links: fold them into the menu. */
 @media (max-width: 1239px) {
-  .topbar-glass { grid-template-columns: auto minmax(0, 1fr); }
+  .topbar-glass { grid-template-columns: auto minmax(0, 1fr) auto; }
   .topbar-links { display: none; }
   .topbar-actions { justify-self: end; }
   .topbar-menu { display: grid !important; }
+  /* The search takes the freed middle stretch so it stays prominent without the links. */
+  html .app-frame .topbar-search { width: 100%; }
 }
 @media (max-width: 640px) {
   html .app-frame.library-page-shell { --topbar-gap: 8px; --topbar-h: 48px; }
   .topbar-version, .topbar-actions > .site-repo { display: none; }
-  html .app-frame .topbar-search { width: min(44vw, 200px); }
   .topbar-search kbd { display: none; }
   html .app-frame .app-frame-panel { margin: 0; border-radius: var(--frame-radius) var(--frame-radius) 0 0; }
   /* On small screens the home card is full-bleed like every other page, so the floating gutter lifts. */
@@ -2969,12 +2970,12 @@ html.light .directory-filter-popover { background: rgba(255,255,255,.96); box-sh
 .directory-filter-popover [data-slot="sidebar-content"] { padding: 4px 0; scrollbar-width: thin; overscroll-behavior: contain; }
 @media (max-width: 760px) { html .app-frame .directory-filter-trigger { margin: 16px 16px 0; } }
 
-/* Top bar search: the bar's centrepiece, in the hero search's glass, not a quiet field in the corner. */
+/* Top bar search: the bar's centrepiece, styled like the library search field beside it. */
 html .app-frame .topbar-search,
 html.light .app-frame .topbar-search {
-  width: clamp(220px, 24vw, 340px); height: 36px; min-height: 36px; padding: 0 6px 0 12px; border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03)), rgba(10,10,12,.55);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 0 0 1px rgba(255,255,255,.08), 0 6px 18px rgba(0,0,0,.35);
+  width: clamp(240px, 26vw, 380px); height: 40px; min-height: 40px; padding: 0 8px 0 14px; border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.035));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 0 0 1px rgba(255,255,255,.08), 0 8px 22px rgba(0,0,0,.35);
   color: var(--lib-text-2);
 }
 html.light .app-frame .topbar-search { background: #fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.09), 0 4px 14px rgba(0,0,0,.08); }
