@@ -24,9 +24,9 @@ const isActive = (pathname: string, href: string) =>
   href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
 /**
- * The floating glass top bar every route shares: brand and version, the site
- * links with an active pill, search (in place on the directories), repo stars,
- * and the theme toggle. Narrower screens fold the links into a menu panel.
+ * The flat top bar every route shares: brand and version, the site links with an
+ * underlined active link, repo stars, and the theme toggle. Narrower screens fold
+ * the links into a menu panel.
  */
 export function Header() {
   const pathname = usePathname();

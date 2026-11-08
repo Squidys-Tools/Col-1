@@ -13,9 +13,9 @@ function sidebarModeFor(pathname: string): SidebarMode {
 }
 
 /**
- * The one layout every route shares: the floating glass top bar (brand,
- * navigation, search, repo stars, theme) over the content card. There is no
- * sidebar; directory filters open in a sheet from the directory's toolbar.
+ * The one layout every route shares: the flat top bar (brand, navigation,
+ * repo stars, theme) over the content card. There is no sidebar; directory
+ * filters open in a sheet from the directory's toolbar.
  */
 export function AppFrame({ children }: { children: ReactNode }) {
   const pathname = usePathname();

@@ -2882,8 +2882,8 @@ a.pg-row:hover .pg-row-arrow { color: var(--lib-text); transform: translate(1px,
 @media (max-width: 700px) { .pg { padding: 28px 16px 64px; } }
 
 /* =====================================================================
-   Top bar shell (no sidebar). One floating glass bar over the content
-   card on every route; it carries everything the sidebar used to.
+   Top bar shell (no sidebar). One flat bar over the content card on
+   every route; it carries everything the sidebar used to.
    ===================================================================== */
 html .app-frame.library-page-shell {
   --topbar-h: 52px; --topbar-gap: 10px;
@@ -2899,14 +2899,9 @@ html .app-frame .app-frame-panel {
 .topbar-glass {
   /* Equal side tracks, so the link row sits dead centre of the bar whatever the sides hold. */
   display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px;
-  width: 100%; height: var(--topbar-h); padding: 0 8px 0 16px; border-radius: 16px;
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025)), color-mix(in srgb, var(--lib-panel) 70%, transparent);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2); backdrop-filter: blur(20px) saturate(1.2);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 0 0 1px rgba(255,255,255,.06), 0 12px 32px rgba(0,0,0,.35);
-}
-html.light .topbar-glass {
-  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.78));
-  box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(0,0,0,.06), 0 10px 28px rgba(0,0,0,.07);
+  width: 100%; height: var(--topbar-h); padding: 0 8px 0 16px;
+  background: var(--lib-panel);
+  box-shadow: inset 0 -1px 0 var(--lib-line);
 }
 .topbar-brand { display: flex; align-items: center; gap: 8px; min-width: 0; justify-self: start; }
 .topbar-version { padding: 2px 6px; border-radius: 6px; background: var(--lib-chip); color: var(--lib-text-3); font-size: 10.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -2914,16 +2909,11 @@ html.light .topbar-glass {
 .topbar-link {
   display: inline-flex; align-items: center; height: 32px; padding: 0 11px; border-radius: 10px;
   color: var(--lib-text-2); font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;
-  transition: color 160ms ease, background-color 160ms ease, box-shadow 160ms ease, scale 160ms ease;
+  transition: color 160ms ease, scale 160ms ease;
 }
-.topbar-link:hover { color: var(--lib-text); background: var(--lib-hover); text-decoration: none; }
+.topbar-link:hover { color: var(--lib-text); }
 .topbar-link:active { scale: .96; }
-.topbar-link[aria-current="page"] {
-  color: var(--lib-text);
-  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 0 0 1px rgba(255,255,255,.06), 0 2px 8px rgba(0,0,0,.25);
-}
-html.light .topbar-link[aria-current="page"] { background: #fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.07), 0 2px 8px rgba(0,0,0,.08); }
+.topbar-link[aria-current="page"] { color: var(--lib-text); box-shadow: inset 0 -2px 0 currentColor; }
 .topbar-link:focus-visible, .topbar-menu:focus-visible, .topbar-panel-link:focus-visible { outline: 2px solid var(--lib-focus); outline-offset: 2px; }
 .topbar-actions { display: flex; align-items: center; gap: 6px; justify-self: end; }
 .topbar-actions > .site-repo { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 10px; border-radius: 10px; background: var(--lib-field); color: var(--lib-text-2); box-shadow: var(--lib-depth-1); font-size: 12.5px; font-weight: 600; text-decoration: none; }
@@ -2940,7 +2930,8 @@ html.light .topbar-link[aria-current="page"] { background: #fff; box-shadow: ins
   animation: topbar-panel-in 260ms cubic-bezier(.16,1,.3,1) both;
 }
 .topbar-panel-link { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 10px; border-radius: 9px; color: var(--lib-text-2); font-size: 14px; font-weight: 600; text-decoration: none; }
-.topbar-panel-link:hover, .topbar-panel-link[aria-current="page"] { background: var(--lib-hover); color: var(--lib-text); text-decoration: none; }
+.topbar-panel-link:hover { color: var(--lib-text); }
+.topbar-panel-link[aria-current="page"] { color: var(--lib-text); box-shadow: inset 2px 0 0 currentColor; }
 .topbar-panel-meta { padding: 8px 10px 4px; border-top: 1px solid var(--lib-line); margin-top: 4px; color: var(--lib-text-3); font-size: 11.5px; font-weight: 600; }
 @keyframes topbar-panel-in { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
 /* Not enough room for eight links: fold them into the menu. */
@@ -3032,17 +3023,22 @@ html[data-search-handoff]::view-transition-group(col-search) { z-index: 3; }
 
 /* Keep the directory search centred like the hero's, so the handoff glides straight up instead of jumping left. Filters sit just right of it. */
 @media (min-width: 641px) {
-  html .app-frame .directory-search-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 620px) minmax(0, 1fr); }
-  html .app-frame .directory-search-row > .directory-hero-search { grid-column: 2; max-width: none; height: 60px; border-radius: 18px; }
+  html .app-frame .directory-search-row > .directory-hero-search { max-width: none; height: 60px; border-radius: 18px; }
   html .app-frame .directory-search-row .directory-filter-trigger { height: 60px; min-height: 60px; border-radius: 18px; }
+}
+/* The centred three-column grid needs the width; below 960px the row stays a flex line so Filters is never starved. */
+@media (min-width: 960px) {
+  html .app-frame .directory-search-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 620px) minmax(0, 1fr); }
+  html .app-frame .directory-search-row > .directory-hero-search { grid-column: 2; }
   html .app-frame .directory-search-row > :not(.directory-hero-search) { grid-column: 3; justify-self: start; }
 }
 
 /* Home: no top bar until the hero search lifts. It then drops in, and the brand is the way back to the hero.
-   Keyboard users tabbing into it get it back too (:focus-within), so its menu and theme control stay reachable. */
+   Keyboard users tabbing into it get it back too (:focus-within), and hovering the top strip reveals it for
+   pointer and touch (:hover), so its menu and theme control stay reachable. */
 .topbar[data-home] { position: absolute; inset: 0 0 auto; }
 .topbar[data-home] .topbar-glass { transition: translate .9s cubic-bezier(.16, 1, .3, 1) .18s, opacity .5s ease .18s; }
-html:not([data-hero-search]):not([data-search-handoff]) .topbar[data-home]:not(:focus-within) .topbar-glass { translate: 0 calc(-100% - var(--topbar-gap, 12px) - 8px); opacity: 0; pointer-events: none; transition-delay: 0s; }
+html:not([data-hero-search]):not([data-search-handoff]) .topbar[data-home]:not(:focus-within):not(:hover) .topbar-glass { translate: 0 calc(-100% - var(--topbar-gap, 12px) - 8px); opacity: 0; pointer-events: none; transition-delay: 0s; }
 @media (prefers-reduced-motion: reduce) { .topbar[data-home] .topbar-glass { transition: none; } }
 
 /* Home: the card fills the whole screen, floating on the same gutter on every side so all four
@@ -3065,3 +3061,4 @@ html.light .app-frame .directory-search-row .directory-filter-trigger[data-activ
 html .directory-hero-search input:focus, html .directory-hero-search input:focus-visible { outline: none; box-shadow: none; }
 html .app-frame .directory-search-row .directory-filter-trigger:focus:not(:focus-visible) { outline: none; }
 html .app-frame[data-home]:has(.topbar:focus-within) .app-frame-panel { translate: 0 var(--home-drop); }
+html .app-frame[data-home]:has(.topbar:hover) .app-frame-panel { translate: 0 var(--home-drop); }
