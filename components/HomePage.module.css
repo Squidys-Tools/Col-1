@@ -278,9 +278,12 @@
 .search input::placeholder { color: var(--lib-text-2); font-weight: 600; }
 .search input::-webkit-search-cancel-button { display: none; }
 .searchClear { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px; border: 0; border-radius: 12px; background: none; color: var(--lib-text-2); cursor: pointer; }
-.searchClear:hover { color: var(--home-text); background: var(--lib-hover); }
+.searchClear:hover { color: var(--home-text); }
 .searchClear svg { width: 16px; height: 16px; }
-.searchClear kbd { padding: 2px 6px; border-radius: 6px; background: var(--lib-field); color: var(--lib-text-2); font: 600 11px/1.4 var(--font-mono, ui-monospace, monospace); }
+/* Same `/` and Esc keys as the directory fields. */
+.searchClear kbd, .searchKey { padding: 2px 7px; border-radius: 6px; background: var(--lib-field); color: var(--lib-text-2); box-shadow: 0 0 0 1px var(--lib-edge); font: 600 11px/1.4 var(--font-mono, ui-monospace, monospace); }
+.searchKey { flex: none; margin-right: 10px; }
+@media (max-width: 760px), (any-pointer: coarse) { .searchKey { display: none; } }
 
 /* The rest of the hero gets out of the way with a short fade — no blurs, no scattering. */
 .heroCopy > :not(.search), .orbit, .tile, .distantTile { transition: opacity .45s ease, translate .7s var(--ease-out), scale .5s var(--ease-out); }

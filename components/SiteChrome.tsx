@@ -10,14 +10,13 @@ import { integrations, integrationTypes } from "@/data/integrations";
 import { createDirectorySearch } from "@/lib/directory";
 import { createIntegrationSearch } from "@/lib/integration-directory";
 import { repo } from "@/lib/repo";
-import { directoryQuery, useDirectoryQuery } from "@/lib/directory-query";
 import styles from "./SiteSearch.module.css";
 
 const compactNumber = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
 const searchDirectory = createDirectorySearch(libraries, componentIndex);
 const searchIntegrations = createIntegrationSearch(integrations);
 
-/** Directories whose sidebar field filters the results in place instead of opening a dropdown. */
+/** Directories whose search row field (FilterBar) filters the results in place, with its placeholder and label. */
 export const IN_PLACE_SEARCH: Partial<Record<string, { placeholder: string; label: string }>> = {
   "/libraries": { placeholder: "Search libraries", label: "Search libraries or components" },
   "/integrations": { placeholder: "Search integrations", label: "Search MCP servers and connectors" },
@@ -119,11 +118,10 @@ export function SearchField({ value, onChange, placeholder, label, className = "
 
 /**
  * Site search with a quick-results dropdown covering libraries and
- * integrations. On a directory it filters that directory in place instead.
- * `collapsed` renders only an icon that opens the library directory with its
- * search focused (used by the docs rail).
+ * integrations. The docs pages render it; directories have their own
+ * in-place SearchField instead.
  */
-export function SiteSearch({ className = "", collapsed = false }: { className?: string; collapsed?: boolean }) {
+export function SiteSearch({ className = "" }: { className?: string }) {
   const pathname = usePathname();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -133,29 +131,6 @@ export function SiteSearch({ className = "", collapsed = false }: { className?: 
     setOpen(false);
     setQuery("");
   }, [pathname]);
-
-  const directoryValue = useDirectoryQuery();
-  const inPlace = collapsed ? undefined : IN_PLACE_SEARCH[pathname];
-
-  if (inPlace) {
-    return (
-      <SearchField
-        value={directoryValue}
-        onChange={directoryQuery.set}
-        placeholder={inPlace.placeholder}
-        label={inPlace.label}
-        className={className}
-      />
-    );
-  }
-
-  if (collapsed) {
-    return (
-      <Link to="/libraries" hash="library-search" className={`site-search-icon ${className}`} aria-label="Search libraries" title="Search libraries">
-        <Search aria-hidden="true" />
-      </Link>
-    );
-  }
 
   const trimmed = query.trim();
   const results = trimmed

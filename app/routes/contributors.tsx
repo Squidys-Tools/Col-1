@@ -35,7 +35,7 @@ function ContributorsPage() {
       <header className="pg-head ld-reveal" style={reveal(0)}>
         <div>
           <h1>Contributors</h1>
-          <p className="pg-lead">The people keeping Col useful, accurate, and open.</p>
+          <p className="pg-lead">Everyone with a merged pull request.</p>
         </div>
         <div className="cb-head-side">
           {contributors.length > 0 && (
@@ -55,15 +55,11 @@ function ContributorsPage() {
           {contributors.map((contributor, index) => (
             <li key={contributor.key} className="ld-reveal" style={reveal(index + 1)}>
               <a href={contributor.url} target="_blank" rel="noopener noreferrer" className="cb-card">
-                <span className="cb-media">
-                  {contributor.avatarUrl ? (
-                    <Image src={contributor.avatarUrl} alt="" width={72} height={72} loading={index < 12 ? "eager" : "lazy"} className="cb-avatar" />
-                  ) : <span className="cb-avatar" aria-hidden />}
-                  <ArrowUpRight className="cb-open" aria-hidden />
-                </span>
-                <span className="cb-body">
-                  <span className="cb-name">{contributor.name}</span>
-                </span>
+                {contributor.avatarUrl ? (
+                  <Image src={contributor.avatarUrl} alt="" width={72} height={72} loading={index < 12 ? "eager" : "lazy"} className="cb-avatar" />
+                ) : <span className="cb-avatar" aria-hidden />}
+                <span className="cb-name">{contributor.name}</span>
+                <ArrowUpRight className="cb-open" aria-hidden />
               </a>
             </li>
           ))}
@@ -82,7 +78,6 @@ function ContributorsPage() {
       <section className="cb-join ld-reveal" style={reveal(3)} aria-labelledby="cb-join-title">
         <div>
           <h2 id="cb-join-title">Want to see your name here?</h2>
-          <p>Add a library, verify components, or fix something that bugs you. Every merged pull request counts.</p>
         </div>
         <div className="cb-join-actions">
           <a href="/docs/pull-requests" className="ld-button ld-button-primary">

@@ -245,15 +245,19 @@ export function HeroSearch() {
           placeholder="Search 100+ libraries…"
           aria-label="Search libraries"
           data-hero-search-input=""
+          aria-description="Press slash to focus search"
+          aria-keyshortcuts="/"
           aria-controls="hero-search-results"
           autoComplete="off"
           spellCheck={false}
         />
-        {open && (
+        {open ? (
           <button type="button" className={styles.searchClear} onClick={() => { setQuery(""); input.current?.focus(); }} aria-label="Clear search">
             <X aria-hidden />
-            <kbd>esc</kbd>
+            <kbd>Esc</kbd>
           </button>
+        ) : (
+          <kbd className={styles.searchKey} aria-hidden>/</kbd>
         )}
       </div>
       {mounted && createPortal(
