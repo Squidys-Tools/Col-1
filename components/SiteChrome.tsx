@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Image } from "@/components/Image";
 import { Link } from "@/components/Link";
 import { usePathname } from "@/hooks/use-pathname";
-import { Search, Star } from "lucide-react";
+import { Search, Star, X } from "lucide-react";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { libraries } from "@/data/libraries";
 import { componentIndex } from "@/data/components";
@@ -62,18 +62,21 @@ export function RepoStars({ stars, className = "" }: { stars: number | null; cla
       title="Col on GitHub"
     >
       <GitHubLogoIcon width={15} height={15} aria-hidden="true" />
-      <span className="site-repo-count">
-        <Star className="site-repo-star" aria-hidden="true" />
-        <span className="cap">{stars === null ? "–" : compactNumber.format(stars)}</span>
-      </span>
+      {/* No placeholder dash while the count loads (or if it fails): the logo alone stands for the link. */}
+      {stars !== null && (
+        <span className="site-repo-count">
+          <Star className="site-repo-star" aria-hidden="true" />
+          <span className="cap">{compactNumber.format(stars)}</span>
+        </span>
+      )}
     </a>
   );
 }
 
 /**
- * A filtering search field in the site search's own shape, bound to whatever
- * query its caller owns. The frame's in-place directory fields render it, and a
- * page can render its own field with it without sharing the global query.
+ * The large glass filtering field every directory shares (Libraries,
+ * Integrations, Components), bound to whatever query its caller owns. Empty, it
+ * shows the `/` shortcut; with a query, a clear button that Esc also triggers.
  */
 export function SearchField({ value, onChange, placeholder, label, className = "" }: {
   value: string;
@@ -83,8 +86,8 @@ export function SearchField({ value, onChange, placeholder, label, className = "
   className?: string;
 }) {
   return (
-    <form role="search" className={`site-search ${className}`} onSubmit={(event) => event.preventDefault()}>
-      <Search aria-hidden="true" />
+    <form role="search" className={`directory-hero-search ${className}`} onSubmit={(event) => event.preventDefault()}>
+      <Search className="directory-hero-search-icon" aria-hidden />
       <input
         data-directory-search=""
         type="search"
@@ -96,12 +99,20 @@ export function SearchField({ value, onChange, placeholder, label, className = "
             else event.currentTarget.blur();
           }
         }}
-        placeholder={placeholder}
+        placeholder={`${placeholder}…`}
         aria-label={label}
         aria-description="Press slash to focus search"
         aria-keyshortcuts="/"
+        autoComplete="off"
+        spellCheck={false}
       />
-      <span className={styles.shortcut} title="Press / to search" aria-hidden="true">Press <kbd>/</kbd></span>
+      {value ? (
+        <button type="button" className="directory-hero-search-clear" onClick={() => onChange("")} aria-label="Clear search">
+          <X aria-hidden /><kbd>Esc</kbd>
+        </button>
+      ) : (
+        <kbd className="directory-hero-search-key" aria-hidden>/</kbd>
+      )}
     </form>
   );
 }
@@ -187,7 +198,7 @@ export function SiteSearch({ className = "", collapsed = false }: { className?: 
         aria-description="Press slash to focus search"
         aria-keyshortcuts="/"
       />
-      <span className={styles.shortcut} title="Press / to search" aria-hidden="true">Press <kbd>/</kbd></span>
+      <kbd className={styles.shortcut} aria-hidden="true">/</kbd>
       {open && trimmed && (
         <div className="site-search-results" aria-label="Search results">
           {results.length || integrationResults.length ? (

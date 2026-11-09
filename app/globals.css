@@ -1447,12 +1447,14 @@ html.light .library-page-shell .dir-segment { height: 32px; padding: 2px; border
 html .library-page-shell .dir-segment button { width: 30px; border-radius: 8px; color: var(--lib-text-2); }
 html .library-page-shell .dir-segment button:hover { color: var(--lib-text); }
 html .library-page-shell .dir-segment button[aria-checked="true"] { color: var(--lib-text); }
+/* The control keeps its button body; the choice inside it is an underline that slides between the cells, not a filled pill. */
 html .library-page-shell .dir-segment-pill,
-html.light .library-page-shell .dir-segment-pill { top: 2px; bottom: 2px; left: 2px; width: 30px; border-radius: 8px; background: var(--lib-pill); box-shadow: var(--lib-pill-depth); }
+html.light .library-page-shell .dir-segment-pill { top: 2px; bottom: 2px; left: 2px; width: 30px; border-radius: 0; box-shadow: none; background: linear-gradient(var(--lib-text), var(--lib-text)) 50% 100% / calc(100% - 16px) 2px no-repeat; }
 html .library-page-shell .dir-segment[data-value="line"] .dir-segment-pill { transform: translateX(30px); }
 
 html .library-page-shell .dir-saved[aria-pressed="true"],
-html.light .library-page-shell .dir-saved[aria-pressed="true"] { background: var(--lib-pill); color: var(--lib-text); box-shadow: var(--lib-pill-depth); }
+/* Pressed keeps the button's normal body; the filled red heart is the state, not a filled background. */
+html.light .library-page-shell .dir-saved[aria-pressed="true"] { background: var(--lib-field); box-shadow: var(--lib-depth-1); color: var(--lib-text); }
 html .library-page-shell .dir-saved[aria-pressed="true"] svg { color: #e5484d; }
 
 /* ---- Sort menu (portaled) ---- */
@@ -1799,7 +1801,10 @@ html.light .app-frame .site-header-search {
 }
 .app-frame .site-header-search input { height: auto; line-height: normal; color: var(--lib-text); font-size: 13px; }
 .app-frame .site-header-search input::placeholder { color: var(--lib-text-2); opacity: 1; }
-.app-frame .site-header-search kbd { min-width: 20px; height: 20px; border: 0; border-radius: 6px; background: var(--lib-bg); color: var(--lib-text-3); box-shadow: 0 0 0 1px var(--lib-edge); font-family: inherit; font-size: 11px; font-weight: 600; }
+/* Same `/` key as the directory fields. */
+html .app-frame .site-header-search kbd { width: auto; height: auto; padding: 2px 7px; border: 0; border-radius: 6px; background: var(--lib-field); color: var(--lib-text-2); box-shadow: 0 0 0 1px var(--lib-edge); font: 600 11px/1.4 var(--font-mono, ui-monospace, monospace); }
+/* No `/` key on phones and touch screens, matching the directory fields. */
+@media (max-width: 760px), (any-pointer: coarse) { html .app-frame .site-header-search kbd { display: none; } }
 .app-frame .site-header-search-results { border: 0; border-radius: 12px; background: var(--lib-surface); color: var(--lib-text); box-shadow: var(--lib-depth-3); }
 .site-header-directory .site-header-search { display: none; }
 
@@ -2025,7 +2030,7 @@ html.light .site-brand-mark { filter: invert(1); }
 .site-search input { min-width: 0; flex: 1 1 auto; height: auto; line-height: normal; background: transparent; color: var(--lib-text); font-size: 13px; outline: none; }
 .site-search input::placeholder { color: var(--lib-text-2); opacity: 1; }
 .site-search input::-webkit-search-cancel-button { display: none; }
-.site-search kbd { display: grid; place-items: center; min-width: 20px; height: 20px; border-radius: 6px; background: var(--lib-bg); color: var(--lib-text-3); box-shadow: 0 0 0 1px var(--lib-edge); font-family: inherit; font-size: 11px; font-weight: 600; }
+.site-search kbd { padding: 2px 7px; border: 0; border-radius: 6px; background: var(--lib-field); color: var(--lib-text-2); box-shadow: 0 0 0 1px var(--lib-edge); font: 600 11px/1.4 var(--font-mono, ui-monospace, monospace); }
 .site-search:focus-within kbd { opacity: 0; }
 .site-search-results {
   position: absolute; top: calc(100% + 6px); left: 0; z-index: 60; width: 280px; padding: 4px;
@@ -2232,8 +2237,9 @@ html.light .docs-shell-nav { box-shadow: inset 0 1px 3px rgba(0,0,0,.07), inset 
 .ld-tabs button[aria-selected="true"] { color: var(--lib-text); }
 .ld-tabs button:focus-visible { outline: 2px solid var(--lib-focus); outline-offset: -2px; }
 .ld-tabs-pill {
-  position: absolute; top: 0; left: 0; height: 30px; border-radius: 9px;
-  background: var(--lib-chip);
+  /* An underline under the selected tab's text (inset by the tab's padding), not a filled chip. */
+  position: absolute; top: 0; left: 0; height: 30px;
+  background: linear-gradient(var(--lib-text), var(--lib-text)) 50% 100% / calc(100% - 22px) 2px no-repeat;
   transition: transform 380ms var(--frame-ease), width 380ms var(--frame-ease), opacity 200ms ease;
 }
 
@@ -2412,7 +2418,7 @@ html.light { --scroll-thumb: rgba(0,0,0,.16); --scroll-thumb-hover: rgba(0,0,0,.
 html.light .ld-tabs { box-shadow: inset 0 0 0 1px var(--lib-edge), inset 0 1px 2px rgba(0,0,0,.04); }
 .ld-tabs button { height: 28px; color: var(--lib-text-2); }
 .ld-tabs button:hover { color: var(--lib-text); }
-.ld-tabs-pill { top: 3px; left: 0; height: 28px; background: var(--lib-pill); box-shadow: var(--lib-pill-depth); }
+.ld-tabs-pill { top: 3px; left: 0; height: 28px; }
 
 /* Copy button: icons and labels cross-fade in place, in both directions. */
 .ld-copy { height: 32px; padding: 0 12px; gap: 7px; }
@@ -2698,7 +2704,8 @@ html .app-frame .docs-search-field > svg { width: 16px; height: 16px; color: var
    ===================================================================== */
 .docs-layout { column-gap: 48px; }
 
-/* Navigation pills, same as the main sidebar, with a pill that slides between pages. */
+/* Docs navigation: the current page and section are marked by a short bar on the leading edge that slides
+   between links (the same idea as the top bar's underline), never a filled background. */
 .docs-nav-groups { position: relative; gap: 20px; }
 .docs-nav-heading { margin-bottom: 6px; padding-left: 10px; color: var(--lib-text-3); font-size: 12px; font-weight: 700; }
 .docs-nav ul, .docs-toc ul { position: relative; display: grid; gap: 2px; box-shadow: none; }
@@ -2710,10 +2717,9 @@ html .app-frame .docs-search-field > svg { width: 16px; height: 16px; color: var
 .docs-nav-link:hover, .docs-toc-link:hover { color: var(--lib-text); }
 .docs-nav-link[aria-current="page"], .docs-toc-link[aria-current="location"] { color: var(--lib-text); font-weight: 600; }
 .docs-nav-pill, .docs-toc-pill {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 0; list-style: none;
-  border-radius: 10px; background: var(--lib-pill); box-shadow: var(--lib-pill-depth); pointer-events: none;
+  position: absolute; top: 0; left: 0; z-index: 0; width: 2px; list-style: none; pointer-events: none;
+  background: linear-gradient(var(--lib-text), var(--lib-text)) 0 50% / 2px calc(100% - 14px) no-repeat;
 }
-.docs-toc-pill { background: var(--lib-chip); box-shadow: none; }
 .docs-nav-pill[data-ready="true"], .docs-toc-pill[data-ready="true"] {
   transition: transform 460ms var(--frame-ease), height 460ms var(--frame-ease), opacity 200ms ease;
 }
@@ -2868,13 +2874,17 @@ html .app-frame .app-frame-panel {
   border-radius: var(--frame-radius) var(--frame-radius) 0 0;
   box-shadow: inset 0 1px 0 var(--lib-edge), inset 0 0 0 1px var(--lib-line);
 }
+/* Reserve the scrollbar's width whether or not a page scrolls, so centred content (the directory search rows)
+   sits in the same place on every route instead of shifting by half a scrollbar. */
+html .app-frame:not([data-home]) .app-frame-panel { scrollbar-gutter: stable; }
 .topbar { position: relative; z-index: 50; grid-column: 1; grid-row: 1; display: flex; align-items: center; padding: var(--topbar-gap); }
 .topbar-glass {
   /* Equal side tracks, so the link row sits dead centre of the bar whatever the sides hold. */
   display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px;
-  width: 100%; height: var(--topbar-h); padding: 0 8px 0 16px;
-  background: var(--lib-panel);
-  box-shadow: inset 0 -1px 0 var(--lib-line);
+  /* The bar sits straight on the frame: no slab of its own, so the content card below is the only shape
+     with edges and corners. Side padding lines the brand up with the card's content. */
+  width: 100%; height: var(--topbar-h); padding: 0 2px 0 12px;
+  background: transparent;
 }
 .topbar-brand { display: flex; align-items: center; gap: 8px; min-width: 0; justify-self: start; }
 .topbar-version { padding: 2px 6px; border-radius: 6px; background: var(--lib-chip); color: var(--lib-text-2); font-size: 10.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -2934,9 +2944,10 @@ html .app-frame .app-frame-panel {
 @media (max-width: 640px) {
   html .app-frame.library-page-shell { --topbar-gap: 8px; --topbar-h: 48px; }
   .topbar-version, .topbar-actions > .site-repo { display: none; }
-  html .app-frame .app-frame-panel { margin: 0; border-radius: var(--frame-radius) var(--frame-radius) 0 0; }
-  /* On small screens the home card is full-bleed like every other page, so the floating gutter lifts. */
-  html .app-frame.library-page-shell[data-home] .app-frame-panel { margin-bottom: 0; border-radius: var(--frame-radius) var(--frame-radius) 0 0; }
+  /* Phones: the card runs edge to edge, so it has no corners; rounded corners touching the screen edge read as cropped.
+     Its top hairline still separates it from the bar. */
+  html .app-frame .app-frame-panel { margin: 0; border-radius: 0; }
+  html .app-frame.library-page-shell[data-home] .app-frame-panel { margin-bottom: 0; border-radius: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .topbar-panel { animation: none; } .topbar-link, .topbar-indicator { transition: none; } }
 
@@ -2982,6 +2993,7 @@ html.light .directory-hero-search { background: linear-gradient(180deg, rgba(255
 .directory-hero-search-clear { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 8px; border: 0; border-radius: 10px; background: none; color: var(--lib-text-2); cursor: pointer; }
 .directory-hero-search-clear:hover { color: var(--lib-text); background: var(--lib-hover); }
 .directory-hero-search-clear svg { width: 16px; height: 16px; }
+@media (any-pointer: coarse) { .directory-hero-search-key { display: none; } }
 @media (max-width: 760px) {
   html .app-frame .directory-search-row { padding: 16px 16px 0; gap: 8px; }
   .directory-hero-search { height: 48px; padding-left: 16px; }

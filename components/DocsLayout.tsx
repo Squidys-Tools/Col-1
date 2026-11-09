@@ -6,7 +6,7 @@ import { SiteSearch } from "./SiteChrome";
 export function DocsLayout({ children }: { children: ReactNode }) {
   return (
     <div className="docs-layout">
-      {/* The bar keeps its search for other pages; docs pages get a compact field of their own here. */}
+      {/* The top bar has no search, so docs pages get a compact site search of their own here. */}
       <div className="docs-search"><SiteSearch className="site-header-search docs-search-field" /></div>
       <aside className="docs-layout-nav"><DocsSidebar /></aside>
       <div className="docs-layout-main">

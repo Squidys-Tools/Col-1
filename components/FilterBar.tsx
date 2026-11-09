@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type FocusEvent, type MouseEvent, type ReactNode } from "react";
-import { Check, ChevronDown, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
+import { Check, ChevronDown, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { usePathname } from "@/hooks/use-pathname";
-import { IN_PLACE_SEARCH } from "./SiteChrome";
+import { IN_PLACE_SEARCH, SearchField } from "./SiteChrome";
 import { directoryQuery, useDirectoryQuery } from "@/lib/directory-query";
 import { categoryIcons, Icons, type IconComponent } from "./MaskIcon";
 import { CATEGORIES, STACKS, USE_CASES, type Category, type Stack, type UseCase } from "@/data/libraries";
@@ -325,53 +325,27 @@ export function FilterSidebar({ label, hasFilters, renderPanel }: FilterSidebarP
   return (
     <>
       <div className="directory-search-row">
-      {search && (
-        <form role="search" className="directory-hero-search" onSubmit={(event) => event.preventDefault()}>
-          <Search className="directory-hero-search-icon" aria-hidden />
-          <input
-            data-directory-search=""
-            type="search"
-            value={query}
-            onChange={(event) => directoryQuery.set(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Escape") {
-                if (query) directoryQuery.set("");
-                else event.currentTarget.blur();
-              }
-            }}
-            placeholder={`${search.placeholder}…`}
-            aria-label={search.label}
-            aria-keyshortcuts="/"
-            autoComplete="off"
-            spellCheck={false}
-          />
-          {query ? (
-            <button type="button" className="directory-hero-search-clear" onClick={() => directoryQuery.set("")} aria-label="Clear search">
-              <X aria-hidden /><kbd>Esc</kbd>
-            </button>
-          ) : (
-            <kbd className="directory-hero-search-key" aria-hidden>/</kbd>
-          )}
-        </form>
-      )}
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            type="button"
-            variant="outline"
-            className="directory-filter-trigger"
-            data-active={hasFilters || undefined}
-            aria-label={hasFilters ? "Open filters, filters active" : "Open filters"}
-          >
-            <SlidersHorizontal aria-hidden /><span className="directory-filter-label">Filters{hasFilters ? " · Active" : ""}</span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent align="end" sideOffset={10} collisionPadding={16} className="directory-filter-popover" aria-label={label}>
-          <div className="directory-filter-panel flex min-h-0 flex-1 flex-col">
-            {renderPanel("-popover")}
-          </div>
-        </PopoverContent>
-      </Popover>
+        {search && (
+          <SearchField value={query} onChange={directoryQuery.set} placeholder={search.placeholder} label={search.label} />
+        )}
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              type="button"
+              variant="outline"
+              className="directory-filter-trigger"
+              data-active={hasFilters || undefined}
+              aria-label={hasFilters ? "Open filters, filters active" : "Open filters"}
+            >
+              <SlidersHorizontal aria-hidden /><span className="directory-filter-label">Filters{hasFilters ? " · Active" : ""}</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent align="end" sideOffset={10} collisionPadding={16} className="directory-filter-popover" aria-label={label}>
+            <div className="directory-filter-panel flex min-h-0 flex-1 flex-col">
+              {renderPanel("-popover")}
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </>
   );
