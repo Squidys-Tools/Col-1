@@ -1543,21 +1543,6 @@ html .library-page-shell .directory-results-pane > .border-dashed { border: 0; b
 html .library-page-shell, .lib-menu { --ring: var(--lib-focus); --sidebar-ring: var(--lib-focus); }
 html .library-page-shell :focus-visible { outline-color: var(--lib-focus) !important; }
 
-/* ---- Notice on the directory: neutral, lifted card ---- */
-body:has(.library-page-shell) .site-notice {
-  left: auto; right: 16px; bottom: 16px; max-width: 420px; padding: 14px 16px;
-  border: 0; border-radius: 14px; background: var(--lib-surface); color: var(--lib-text); box-shadow: var(--lib-depth-3);
-}
-body:has(.library-page-shell) .site-notice > div { flex-direction: column; align-items: flex-start; gap: 12px; }
-body:has(.library-page-shell) .site-notice h2 { font-size: 14px; }
-body:has(.library-page-shell) .site-notice p { color: var(--lib-text-2); font-size: 13px; line-height: 1.45; }
-body:has(.library-page-shell) .site-notice-cta {
-  min-height: 32px; height: 32px; padding: 0 12px; border-radius: 9px;
-  background: var(--lib-text) !important; color: var(--lib-bg) !important; font-size: 12.5px;
-}
-body:has(.library-page-shell) .site-notice-close { min-height: 32px; color: var(--lib-text-2); font-size: 12.5px; text-decoration: none; }
-body:has(.library-page-shell) .site-notice-close:hover { color: var(--lib-text); }
-
 @media (max-width: 760px) {
   .library-page-shell .directory-results-pane { padding: 16px 16px 120px; border-radius: 0; box-shadow: none; }
   .library-page-shell .dir-search, html .library-page-shell .dir-search:focus-within { width: 100%; }
