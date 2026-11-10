@@ -11,9 +11,9 @@ const reveal = (index: number) => ({ "--i": index }) as CSSProperties;
 
 /** Things maintainers spend their time on, which sponsorship pays for. */
 const supports = [
-  ["Reviewing submissions", "Each entry is checked against its official source."],
-  ["Keeping listings current", "Links and component records follow upstream changes."],
-  ["Improving the directory", "Search, filters, and library pages."],
+  ["Reviewing submissions", "Checking every new library and component against its official source."],
+  ["Keeping listings current", "Updating links, component records, and details as projects change."],
+  ["Improving the directory", "Better search, filters, and pages for everyone who uses Col."],
 ] as const;
 
 export function SponsorsSection() {
@@ -31,16 +31,18 @@ export function SponsorsSection() {
       </header>
 
       {sponsors.length > 0 ? (
-        <ul className={styles.list}>
+        <ul className={styles.grid}>
           {sponsors.map(({ name, url, tier, logo, tagline }, index) => (
             <li key={name} data-tier={tier} className="ld-reveal" style={reveal(index + 1)}>
               <a href={url} target="_blank" rel="noopener noreferrer" className={styles.card}>
-                <Image src={logo} alt="" width={128} height={128} className={styles.mark} />
-                <span className={styles.copy}>
-                  <span className={styles.name}>{name}</span>
-                  <span className={styles.tagline}>{tagline}</span>
+                <span className={styles.media}>
+                  <Image src={logo} alt="" width={128} height={128} className={styles.mark} />
+                  <span className={styles.copy}>
+                    <span className={styles.name}>{name}</span>
+                    <span className={styles.tagline}>{tagline}</span>
+                  </span>
                 </span>
-                <span className={styles.tier}>
+                <span className={styles.band}>
                   <span>{tier}</span>
                   <ArrowUpRight className={styles.arrow} aria-hidden />
                 </span>
@@ -52,7 +54,7 @@ export function SponsorsSection() {
         <section className="pg-empty pg-empty-center ld-reveal" style={reveal(1)} aria-labelledby="sponsors-empty">
           <span className="pg-empty-icon" aria-hidden><Icons.sponsors className="pg-empty-mask" /></span>
           <p id="sponsors-empty" className="pg-empty-title">No sponsors yet</p>
-          <p>Col is maintained by volunteers. Sponsoring keeps it going.</p>
+          <p>Col is built and maintained by volunteers. If it saves your team time, sponsoring is the most direct way to keep it going.</p>
         </section>
       )}
 
